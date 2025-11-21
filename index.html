@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wild Vista — Nature & Conservation</title>
+  <meta name="description" content="Wild Vista — photos, stories and resources celebrating nature and conservation." />
+  <link rel="icon" href="data:,">
+  <style>
+    /* ==========================
+       Variables & Reset
+       ========================== */
+    :root{
+      --bg:#0f1720;
+      --card:#0b1220;
+      --muted:#9aa4a8;
+      --accent:#78d5a3;
+      --accent-2:#61b5ea;
+      --glass: rgba(255,255,255,0.04);
+      --radius:18px;
+      --max-width:1100px;
+      --gap:20px;
+      --shadow: 0 8px 30px rgba(2,6,23,0.6);
+      --fw-regular: 400;
+      --fw-medium: 600;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #081421 0%, #07111a 60%);
+      color: #e6eef0;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      padding:32px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      gap:24px;
+      min-height:100vh;
+    }
+    .container{
+      width:100%;
+      max-width:var(--max-width);
+    }
+
+    /* ==========================
+       Header / Nav
+       ========================== */
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:28px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:inherit;
+    }
+    .logo{
+      width:52px;
+      height:52px;
+      border-radius:12px;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:grid;
+      place-items:center;
+      font-weight:700;
+      color:#05221b;
+      box-shadow: var(--shadow);
+    }
+    nav{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:var(--fw-medium);
+      padding:8px 12px;
+      border-radius:10px;
+    }
+    nav a:hover{color:var(--accent)}
+    .cta{
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#05221b;
+      padding:10px 14px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:700;
+      box-shadow: 0 6px 20px rgba(94,177,146,0.12);
+    }
+
+    /* Mobile menu */
+    .menu-toggle{
+      display:none;
+      background:transparent;
+      border:0;
+      color:var(--muted);
+      font-size:18px;
+      cursor:pointer;
+    }
+
+    /* ==========================
+       Hero
+       ========================== */
+    .hero{
+      background: linear-gradient(180deg, rgba(11,21,26,0.6), rgba(6,12,16,0.6)), url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=0b6b6e2f8affd7c0a3b0cba31f3b76d9') center/cover no-repeat;
+      border-radius:var(--radius);
+      padding:36px;
+      box-shadow: var(--shadow);
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:24px;
+      align-items:center;
+      margin-bottom:28px;
+      overflow:hidden;
+    }
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr; padding:28px}
+      nav{display:none}
+      .menu-toggle{display:inline-block}
+    }
+    .hero .eyebrow{
+      display:inline-block;
+      font-weight:700;
+      background:var(--glass);
+      color:var(--accent);
+      padding:6px 10px;
+      border-radius:999px;
+      letter-spacing:0.6px;
+      margin-bottom:12px;
+    }
+    .hero h1{
+      margin:0 0 12px 0;
+      font-size:clamp(28px,4vw,42px);
+      line-height:1.02;
+      letter-spacing:-0.01em;
+    }
+    .hero p{color:var(--muted); margin:0 0 18px 0}
+    .hero .actions{display:flex; gap:12px; flex-wrap:wrap}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:14px;
+      box-shadow: 0 6px 20px rgba(3,8,12,0.5);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    /* Quick stats (right column) */
+    .stats{display:grid; gap:12px; grid-template-columns:1fr 1fr}
+    .stat{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .stat .num{font-weight:700; font-size:20px}
+    .stat .lbl{font-size:12px; color:var(--muted)}
+
+    /* ==========================
+       Gallery
+       ========================== */
+    .section-title{display:flex; justify-content:space-between; align-items:end; margin:8px 0 10px}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:var(--gap);
+    }
+    @media (max-width:1000px){ .grid{grid-template-columns:repeat(3,1fr)} }
+    @media (max-width:700px){ .grid{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width:420px){ .grid{grid-template-columns:1fr} }
+
+    .photo{
+      position:relative;
+      border-radius:14px;
+      overflow:hidden;
+      cursor:pointer;
+      min-height:160px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:flex-start;
+      color:#fff;
+      transition:transform .35s ease, box-shadow .3s ease;
+      box-shadow: 0 6px 18px rgba(2,8,12,0.5);
+      background-size:cover;
+      background-position:center;
+    }
+    .photo:focus{outline:3px solid rgba(120,213,163,0.2)}
+    .photo:hover{transform:translateY(-6px); box-shadow:0 20px 40px rgba(2,8,12,0.6)}
+    .photo .meta{
+      background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
+      width:100%;
+      padding:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    .photo small{color:#dcefe1; font-weight:600; letter-spacing:0.2px}
+
+    /* ==========================
+       Features & About
+       ========================== */
+    .columns{
+      display:grid;
+      grid-template-columns:1fr 360px;
+      gap:20px;
+      margin-top:22px;
+    }
+    @media (max-width:980px){ .columns{grid-template-columns:1fr} }
+
+    .features{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+    }
+    @media (max-width:900px){ .features{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width:560px){ .features{grid-template-columns:1fr} }
+
+    .feature{
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      padding:14px;
+      border-radius:12px;
+      min-height:110px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .feature h4{margin:0}
+    .feature p{color:var(--muted); margin:0; font-size:14px}
+
+    /* ==========================
+       Footer / Contact
+       ========================== */
+    footer{
+      margin-top:28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .socials a{margin-left:12px; color:var(--muted); text-decoration:none}
+
+    /* ==========================
+       Lightbox (modal)
+       ========================== */
+    .lightbox{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background: rgba(2,6,10,0.7);
+      z-index:1200;
+      padding:20px;
+    }
+    .lightbox.open{display:flex}
+    .lightbox .inner{
+      max-width:1200px;
+      width:100%;
+      max-height:90vh;
+      background:linear-gradient(180deg, #07121a, #061018);
+      border-radius:12px;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:1fr 360px;
+      gap:12px;
+    }
+    @media (max-width:980px){ .lightbox .inner{grid-template-columns:1fr} }
+    .lightbox img{width:100%; height:100%; object-fit:cover; display:block}
+    .lightbox .info{padding:18px; color:var(--muted)}
+    .close-btn{
+      background:transparent; border:0; color:var(--muted); font-weight:700; cursor:pointer;
+    }
+
+    /* Accessibility / Prefers Reduced Motion */
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none!important; animation:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main">
+    <header>
+      <a class="brand" href="#" aria-label="Wild Vista home">
+        <div class="logo" aria-hidden="true">WV</div>
+        <div>
+          <div style="font-weight:700">Wild Vista</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">Nature • Photography • Conservation</div>
+        </div>
+      </a>
+
+      <nav aria-label="Primary">
+        <a href="#gallery">Gallery</a>
+        <a href="#about">About</a>
+        <a href="#resources">Resources</a>
+        <a class="cta" href="#subscribe">Join</a>
+      </nav>
+
+      <button class="menu-toggle" aria-expanded="false" aria-controls="mobile-nav" id="menuToggle">☰</button>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" aria-label="Discover nature">
+      <div>
+        <span class="eyebrow">Explore</span>
+        <h1>Find wonder in the wild — photos, stories & simple ways to protect our planet.</h1>
+        <p>Stunning galleries, practical conservation tips and guided walks. Breathe deeply — you're in a place that celebrates earth's wild beauty.</p>
+        <div class="actions">
+          <a class="card cta" href="#gallery">Explore Gallery</a>
+          <a class="card" href="#about" style="text-decoration:none;color:inherit">Learn About Us</a>
+        </div>
+      </div>
+
+      <aside class="card" aria-hidden="false" role="complementary">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+          <strong>Quick Stats</strong>
+          <small style="color:var(--muted)">Updated</small>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="num">1.2k</div><div class="lbl">Images</div></div>
+          <div class="stat"><div class="num">350</div><div class="lbl">Articles</div></div>
+          <div class="stat"><div class="num">42</div><div class="lbl">Field Trips</div></div>
+          <div class="stat"><div class="num">12k</div><div class="lbl">Members</div></div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" aria-labelledby="galleryTitle">
+      <div class="section-title">
+        <h2 id="galleryTitle" style="margin:0">Photo Gallery</h2>
+        <small style="color:var(--muted)">Click any image to open</small>
+      </div>
+
+      <div class="grid" id="galleryGrid">
+        <!-- Items: using Unsplash images (publicly available). Each card has data for lightbox. -->
+        <div class="photo card" tabindex="0" role="button" aria-label="Open image: Misty forest" style="background-image:url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=900&auto=format&fit=crop')"
+             data-full="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2000&auto=format&fit=crop" data-title="Misty Forest" data-desc="A serene mist hugging ancient pines at sunrise.">
+          <div class="meta"><small>Misty forest</small><small>📷 A. Silva</small></div>
+        </div>
+
+        <div class="photo card" tabindex="0" role="button" aria-label="Open image: River bend" style="background-image:url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=900&auto=format&fit=crop')"
+             data-full="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=2000&auto=format&fit=crop" data-title="River Bend" data-desc="A winding river cuts through emerald valleys.">
+          <div class="meta"><small>River bend</small><small>📷 J. Park</small></div>
+        </div>
+
+        <div class="photo card" tabindex="0" role="button" aria-label="Open image: Mountain sunrise" style="background-image:url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=900&auto=format&fit=crop')"
+             data-full="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2000&auto=format&fit=crop" data-title="Mountain Sunrise" data-desc="Sunrise paints alpine peaks golden.">
+          <div class="meta"><small>Mountain sunrise</small><small>📷 L. Gomez</small></div>
+        </div>
+
+        <div class="photo card" tabindex="0" role="button" aria-label="Open image: Beach cliffs" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=900&auto=format&fit=crop')"
+             data-full="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2000&auto=format&fit=crop" data-title="Coastal Cliffs" data-desc="Waves crashing into time-carved cliffs.">
+          <div class="meta"><small>Coastal cliffs</small><small>📷 S. Kaur</small></div>
+        </div>
+
+        <div class="photo card" tabindex="0" role="button" aria-label="Open image: Autumn foliage" style="background-image:url('https://images.unsplash.com/photo-1441974231531-8f7f8bfa6f1a?q=80&w=900&auto=format&fit=crop')"
+             data-full="https://images.unsplash.com/photo-1441974231531-8f7f8bfa6f1a?q=80&w=2000&auto=format&fit=crop" data-title="Autumn Foliage" data-desc="A riot of fall colors in a quiet valley.">
+          <div class="meta"><small>Autumn foliage</small><small>📷 M. Rossi</small></div>
+        </div>
+
+        <div class="photo card" tabindex="0" role="button" aria-label="Open image: Desert dunes" style="background-image:url('https://images.unsplash.com/photo-1501785888041-5c7c0a2fdfd7?q=80&w=900&auto=format&fit=crop')"
+             data-full="https://images.unsplash.com/photo-1501785888041-5c7c0a2fdfd7?q=80&w=2000&auto=format&fit=crop" data-title="Desert Dunes" data-desc="Soft shadows roll across golden dunes.">
+          <div class="meta"><small>Desert dunes</small><small>📷 T. Nguyen</small></div>
+        </div>
+
+        <div class="photo card" tabindex="0" role="button" aria-label="Open image: Waterfall" style="background-image:url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=900&auto=format&fit=crop')"
+             data-full="https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=2000&auto=format&fit=crop" data-title="Hidden Waterfall" data-desc="A cascade tucked inside a mossy gorge.">
+          <div class="meta"><small>Hidden waterfall</small><small>📷 N. Patel</small></div>
+        </div>
+
+        <div class="photo card" tabindex="0" role="button" aria-label="Open image: Meadow" style="background-image:url('https://images.unsplash.com/photo-1441974231531-ffe5b5f2a7f0?q=80&w=900&auto=format&fit=crop')"
+             data-full="https://images.unsplash.com/photo-1441974231531-ffe5b5f2a7f0?q=80&w=2000&auto=format&fit=crop" data-title="Mountain Meadow" data-desc="Wildflowers sway under a wide blue sky.">
+          <div class="meta"><small>Mountain meadow</small><small>📷 R. Singh</small></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features & About -->
+    <div class="columns" id="about">
+      <div>
+        <h3 style="margin-top:0">What we do</h3>
+        <p style="color:var(--muted); margin-top:6px">Wild Vista shares images, stories and practical actions to help everyday people connect with nature and protect it — from local cleanups to mindful travel and habitat restoration projects.</p>
+
+        <div class="features" style="margin-top:18px">
+          <div class="feature">
+            <strong>Guided walks</strong>
+            <p>Monthly guided nature walks with volunteer naturalists and photographers.</p>
+          </div>
+          <div class="feature">
+            <strong>Conservation projects</strong>
+            <p>Community-driven habitat restoration and citizen science programs.</p>
+          </div>
+          <div class="feature">
+            <strong>Photo stories</strong>
+            <p>Curated photo-essays that tell the story behind each habitat and species.</p>
+          </div>
+          <div class="feature">
+            <strong>Resources</strong>
+            <p>Practical tips on reducing your footprint and supporting local wildlife.</p>
+          </div>
+          <div class="feature">
+            <strong>Volunteer hub</strong>
+            <p>Find nearby opportunities and join a team that cares for wild places.</p>
+          </div>
+          <div class="feature">
+            <strong>Shop (sustainable)</strong>
+            <p>Ethically-sourced goods that support conservation partners.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="card" style="height:100%">
+        <h4 style="margin-top:0">Join the community</h4>
+        <p style="color:var(--muted)">Sign up for monthly updates, photo tips and invites to local events.</p>
+        <form id="subscribe" style="display:flex;flex-direction:column; gap:10px; margin-top:12px;">
+          <label for="email" style="font-size:13px;color:var(--muted)">Email</label>
+          <input id="email" type="email" placeholder="you@example.com" required
+                 style="padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04); background:transparent;color:inherit">
+          <button type="submit" class="cta" style="border-radius:10px;padding:10px">Subscribe</button>
+          <small style="color:var(--muted)">We never sell your email. Unsubscribe anytime.</small>
+        </form>
+      </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div>© <span id="year"></span> Wild Vista · Built with care for nature</div>
+      <div class="socials" aria-hidden="false">
+        <a href="#" title="Instagram">IG</a>
+        <a href="#" title="Twitter">TW</a>
+        <a href="#" title="Contact">✉️</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Image viewer">
+    <div class="inner" role="document">
+      <div style="min-height:300px; background:#031218;">
+        <img id="lightboxImg" alt="">
+      </div>
+      <div class="info">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <h3 id="lightboxTitle" style="margin:0">Title</h3>
+            <p id="lightboxDesc" style="margin:6px 0 12px;color:var(--muted)">Description</p>
+          </div>
+          <div><button class="close-btn" id="closeLightbox" aria-label="Close viewer">✕</button></div>
+        </div>
+        <div style="color:var(--muted); font-size:14px">
+          <p><strong>Tip:</strong> Use arrow keys to navigate, Esc to close.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu toggle (simple)
+    const menuToggle = document.getElementById('menuToggle');
+    menuToggle?.addEventListener('click', (e) => {
+      const nav = document.querySelector('nav');
+      const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      menuToggle.setAttribute('aria-expanded', String(!expanded));
+      if(nav) nav.style.display = expanded ? 'none' : 'flex';
+    });
+
+    // Lightbox functionality
+    const grid = document.getElementById('galleryGrid');
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const lbTitle = document.getElementById('lightboxTitle');
+    const lbDesc = document.getElementById('lightboxDesc');
+    let currentIndex = -1;
+    const photos = Array.from(document.querySelectorAll('.photo'));
+
+    function openLightbox(index){
+      const el = photos[index];
+      if(!el) return;
+      currentIndex = index;
+      lbImg.src = el.dataset.full || '';
+      lbImg.alt = el.dataset.title || 'Nature photo';
+      lbTitle.textContent = el.dataset.title || '';
+      lbDesc.textContent = el.dataset.desc || '';
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      // focus for accessibility
+      document.getElementById('closeLightbox').focus();
+    }
+    function closeLightbox(){
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      lbImg.src = '';
+    }
+
+    photos.forEach((p, idx) => {
+      const onOpen = () => openLightbox(idx);
+      p.addEventListener('click', onOpen);
+      p.addEventListener('keydown', (ev) => {
+        if(ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); onOpen(); }
+      });
+    });
+
+    document.getElementById('closeLightbox').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if(e.target === lightbox) closeLightbox();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if(lightbox.classList.contains('open')){
+        if(e.key === 'Escape') closeLightbox();
+        if(e.key === 'ArrowRight') openLightbox((currentIndex + 1) % photos.length);
+        if(e.key === 'ArrowLeft') openLightbox((currentIndex - 1 + photos.length) % photos.length);
+      }
+    });
+
+    // Minimal submit handling for demo (no backend)
+    document.getElementById('subscribe').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      if(!email) return alert('Please enter an email address.');
+      alert('Thanks — ' + email + ' subscribed (demo).');
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
